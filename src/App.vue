@@ -1,13 +1,16 @@
 <template>
   <div class="app-wrapper">
     <nav class="d-flex gap-3 mb-4">
-      <router-link to="/" class="btn btn-outline-primary">📦 Quản lý hàng hóa</router-link>
-      <router-link to="/dealreg" class="btn btn-outline-success">📋 Deal Registration</router-link>
+      <router-link to="/datalist" class="btn btn-outline-success" style="font-weight: bolder;font-size: larger;">📋 DATABASE</router-link>
+      <router-link to="/customers" class="btn btn-outline-warning" style="font-weight: bolder;font-size: larger;">📇 QUẢN LÝ KHÁCH HÀNG</router-link> <!-- ✅ thêm nút -->
+      <router-link to="/" class="btn btn-outline-primary" style="font-weight: bolder;font-size: larger;">📦 BÁO GIÁ</router-link>
+      <router-link to="/dealreg" class="btn btn-outline-success" style="font-weight: bolder;font-size: larger;background-color: red;">📋 ĐĂNG KÍ DEALREG</router-link>
+      
     </nav>
 
     <!-- ✅ Bọc router-view trong keep-alive đúng cách -->
     <router-view v-slot="{ Component }">
-  <keep-alive include="Home,DealReg">
+  <keep-alive include="Home,DealReg,CustomerManage">
     <component :is="Component" />
   </keep-alive>
 </router-view>

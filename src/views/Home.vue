@@ -1,7 +1,7 @@
 <template>
    
   <div class="container py-4">
-    <h2 class="mb-4 text-center">Quản lý Hàng hóa</h2>
+    <h2 class="mb-4 text-center" style="color: white;">BÁO GIÁ 💻</h2>
     
     <div class="row">
       <div class="col-md-4">
@@ -10,18 +10,32 @@
 
           <div class="mb-3">
   <label class="form-label" style="color: red;font-weight: bold;">Tên Công Ty</label>
-  <input v-model="companyName" type="text" class="form-control" />
+  <input
+    v-model="companyName"
+    list="companyOptions"
+    @input="autoFillCustomerInfo"
+    class="form-control"
+    placeholder="Nhập hoặc chọn công ty..."
+  />
+  <datalist id="companyOptions">
+  <option
+    v-for="(c, index) in customerList"
+    :key="index"
+    :value="c.company"
+  />
+</datalist>
 </div>
 
-<div class="mb-3">
-  <label class="form-label" style="color: red;font-weight: bold;">Tên Người Nhận</label>
-  <input v-model="receiverName" type="text" class="form-control" />
-</div>
 
-<div class="mb-3">
-  <label class="form-label" style="color: red;font-weight: bold;">Địa Chỉ Người Nhận</label>
-  <input v-model="receiverAddress" type="text" class="form-control" />
-</div>
+          <div class="mb-3">
+            <label class="form-label" style="color: red;font-weight: bold;">Tên Người Nhận</label>
+            <input v-model="receiverName" type="text" class="form-control"  placeholder="Nhập tên người nhận"/>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" style="color: red;font-weight: bold;">Địa Chỉ Người Nhận</label>
+            <input v-model="receiverAddress" type="text" class="form-control"  placeholder="Nhập địa chỉ người nhận"/>
+          </div>
 
           <div class="mb-3">
             <label class="form-label" style="color: blue;font-weight: bold;">Chọn Model (Thiết bị)</label>
@@ -105,23 +119,23 @@
       </button>
         <table class="table table-bordered text-center align-middle fixed-table">
           <thead class="table-light">
-            <tr>
-              <th style="width: 50px;">STT</th>
-    <th style="width: 150px;">Tên hàng hóa</th>
-    <th style="width: 400px;">Diễn giải</th>
-    <th style="width: 80px;">Hãng</th>
-    <th style="width: 80px;">Đơn vị tính</th>
-    <th style="width: 50px;">S.L</th>
-    <th style="width: 120px;">Giá List </th> <!-- ⭐ mới -->
-    <th style="width: 120px;">Đơn giá </th>
-    <th style="width: 120px;">Tổng Giá List</th> <!-- ⭐ mới -->
-    <th style="width: 120px;">Thành tiền</th>
-    <th style="width: 100px;">VAT</th>
-    <th style="width: 140px;">Thành tiền + VAT</th>
+            <tr >
+              <th style="width: 50px;background-color: #198754;color:aliceblue">STT</th>
+    <th style="width: 150px;background-color: #198754;color:aliceblue">Tên hàng hóa</th>
+    <th style="width: 400px;background-color: #198754;color:aliceblue">Diễn giải</th>
+    <th style="width: 80px;background-color: #198754;color:aliceblue">Hãng</th>
+    <th style="width: 80px;background-color: #198754;color:aliceblue">Đơn vị tính</th>
+    <th style="width: 50px;background-color: #198754;color:aliceblue">S.L</th>
+    <th style="width: 120px;background-color: #198754;color:aliceblue">Giá List </th> <!-- ⭐ mới -->
+    <th style="width: 120px;background-color: #198754;color:aliceblue">Đơn giá </th>
+    <th style="width: 120px;background-color: #198754;color:aliceblue">Tổng Giá List</th> <!-- ⭐ mới -->
+    <th style="width: 120px;background-color: #198754;color:aliceblue">Thành tiền</th>
+    <th style="width: 100px;background-color: #198754;color:aliceblue">VAT</th>
+    <th style="width: 140px;background-color: #198754;color:aliceblue">Thành tiền + VAT</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(product, index) in productList" :key="index" @click="selectProduct(product, index)" :class="{ 'selected-row': editingIndex === index }" style="cursor: pointer">
+            <tr class="tRow" v-for="(product, index) in productList" :key="index" @click="selectProduct(product, index)" :class="{ 'selected-row': editingIndex === index }" style="cursor: pointer">
               <td>{{ index + 1 }}</td>
     <td>{{ product.name }}</td>
     <td class="text-start">{{ product.description }}</td>
@@ -241,9 +255,44 @@ let editingIndex = -1
 const showAlert = ref(false)
 const alertMessage = ref('')
 
+const customerList = ref([])
 const customAlert = (msg) => {
   alertMessage.value = msg
   showAlert.value = true
+}
+
+const fetchCustomerList = async () => {
+  try {
+    const sheetURL = 'https://docs.google.com/spreadsheets/d/1JIr9UbcCEwQ-rEyUjVrS7tFLX-REQT3LmEejRY-RhbY/gviz/tq?tqx=out:json&sheet=CUSTOMER_MANAGER'
+    const res = await fetch(sheetURL)
+    const text = await res.text()
+    const json = JSON.parse(text.substring(47).slice(0, -2))
+
+    customerList.value = json.table.rows.map(row => ({
+      company: row.c[2]?.v || '',    // Cột C
+      receiver: row.c[8]?.v || '',   // Cột I
+      address: row.c[5]?.v || ''     // Cột F
+    }))
+
+    console.log('✅ Danh sách công ty:', customerList.value)
+  } catch (error) {
+    console.error('❌ Lỗi lấy danh sách công ty:', error)
+  }
+}
+
+
+const autoFillCustomerInfo = () => {
+  const input = companyName.value?.trim().toLowerCase()
+  if (!input) return
+
+  const matched = customerList.value.find(c =>
+    c.company?.trim().toLowerCase() === input
+  )
+
+  if (matched) {
+    receiverName.value = matched.receiver
+    receiverAddress.value = matched.address
+  }
 }
 
 const fetchProducts = async () => {
@@ -404,7 +453,10 @@ const deleteProduct = () => {
   showModal.value = false
 }
 
-onMounted(fetchProducts)
+onMounted(() => {
+  fetchProducts()
+  fetchCustomerList()
+})
 
 const formatNumberInput = (value) => {
   if (!value) return ''
@@ -561,6 +613,8 @@ body {
   max-width: 400px;
   text-align: center;
 }
-
+.tRow:hover{
+  opacity: 0.8;
+}
 </style>
 
