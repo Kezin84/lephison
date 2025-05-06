@@ -112,6 +112,17 @@
     <div class="text-end mt-3">
   <button @click="exportDealReg" class="btn btn-success">📤 Xuất DealReg sang Google Sheet</button>
 </div>
+<div class="text-end mt-2">
+  <a
+    href="https://docs.google.com/spreadsheets/d/1FQv4WbpyUaniwHt3q3fD1v947-52NU669904L89XGpk/export?format=pdf&gid=1210225152"
+    target="_blank"
+    download
+    class="btn btn-danger"
+  >
+    📄 Tải file PDF DealReg
+  </a>
+</div>
+
 
   </div>
 
@@ -298,26 +309,6 @@
         </div>
       </div>
     </div>
-
-      <!-- NÚT CUỘN LÊN & XUỐNG -->
-<div class="scroll-buttons">
-  <button
-    v-show="showScrollTop"
-    class="scroll-btn"
-    @click="scrollToTop"
-    title="Lên đầu trang"
-  >
-    🔼
-  </button>
-  <button
-    v-show="showScrollTop"
-    class="scroll-btn"
-    @click="scrollToBottom"
-    title="Xuống cuối trang"
-  >
-    🔽
-  </button>
-</div>
 
 <div v-if="showPopup" class="popup-notify show">
   {{ popupMessage }}

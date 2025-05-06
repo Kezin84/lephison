@@ -81,11 +81,11 @@
           </div>
 
           <button @click="addProduct" class="btn btn-success w-100 mt-3" style="background-color: blue;">
-            ➕ Thêm vào danh sách
+             THÊM✅
           </button>
           <div class="text-end mt-3">
   <button @click="exportToGoogleSheet" class="btn btn-primary" style="background-color: green;">
-    <strong>(1)</strong>📤 Xuất báo giá sang Google Sheet
+    <strong>(1)</strong> Xuất báo giá sang Google Sheet📤
   </button><br>
   <a
   href="https://docs.google.com/spreadsheets/d/1J8-2PioiG1JEumeQ5k90B-Jux9M1noRXSOwJsuPlghM/export?format=xlsx"
@@ -94,10 +94,19 @@
   class="btn btn-success"
   style="margin-top: 1rem;"
 >
-<strong>(2)</strong> Tải file Excel⬇️
-</a>
+<strong>(2)</strong> DOAWLOAD EXCEL⬇️
+</a><br>
+<a
+    href="https://docs.google.com/spreadsheets/d/1J8-2PioiG1JEumeQ5k90B-Jux9M1noRXSOwJsuPlghM/export?format=pdf&gid=1649674712"
+    target="_blank"
+    download
+    class="btn btn-danger"
+    style="margin-top: 0.5rem;"
+  >
+    <strong>(3)</strong> DOAWLOAD PDF 📑
+  </a>
 <button @click="goToDealReg" class="btn btn-warning w-100 mt-2" style="color:blue;font-weight: bold;">
-   SEND INFO TO DEALREG✅
+   SEND PRICE TO DEALREG✅
 </button>
 
 </div>

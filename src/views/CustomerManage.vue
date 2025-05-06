@@ -98,25 +98,6 @@
       {{ popupMessage }}
     </div>
 
-    <!-- NÚT CUỘN LÊN & XUỐNG -->
-<div class="scroll-buttons">
-  <button
-    v-show="showScrollTop"
-    class="scroll-btn"
-    @click="scrollToTop"
-    title="Lên đầu trang"
-  >
-    🔼
-  </button>
-  <button
-    v-show="showScrollTop"
-    class="scroll-btn"
-    @click="scrollToBottom"
-    title="Xuống cuối trang"
-  >
-    🔽
-  </button>
-</div>
 
 
   </div>
