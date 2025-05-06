@@ -221,9 +221,9 @@
   <div v-if="showAlert" class="custom-alert">
   <div class="custom-alert-box">
     <p>{{ alertMessage }}</p>
-    <button @click="showAlert = false" class="btn btn-sm btn-danger mt-2">Đóng</button>
   </div>
 </div>
+
 
 </template>
 
@@ -259,7 +259,11 @@ const customerList = ref([])
 const customAlert = (msg) => {
   alertMessage.value = msg
   showAlert.value = true
+  setTimeout(() => {
+    showAlert.value = false
+  }, 500) // ⏱️ 0.5 giây
 }
+
 
 const fetchCustomerList = async () => {
   try {
@@ -390,7 +394,8 @@ const addProduct = () => {
   form.value.quantity = 1
   form.value.vat = 10
 
-  
+  customAlert('✅ Đã thêm vào danh sách thành công!')
+
 }
 
 const totalThanhTien = computed(() =>
@@ -446,11 +451,15 @@ const updateProduct = () => {
 
   productList.value[editingIndex] = { ...editingProduct.value }
   showModal.value = false
+  customAlert('✅ Đã lưu ')
+
 }
 
 const deleteProduct = () => {
   productList.value.splice(editingIndex, 1)
   showModal.value = false
+  customAlert('🗑️ Đã xóa sản phẩm khỏi danh sách!')
+
 }
 
 onMounted(() => {
@@ -520,7 +529,11 @@ const goToCurrentForm = () => {
 window.alert = (msg) => {
   alertMessage.value = msg
   showAlert.value = true
+  setTimeout(() => {
+    showAlert.value = false
+  }, 500)
 }
+
 
 const goToDealReg = () => {
   if (productList.value.length === 0) {
@@ -528,9 +541,13 @@ const goToDealReg = () => {
     return
   }
   localStorage.setItem('dealProducts', JSON.stringify(productList.value))
+
+  // ✅ Thông báo chép thành công
+  alert('✅ Đã chép dữ liệu thành công!')
+
   setTimeout(() => {
     router.push('/dealreg')
-  }, 100)
+  }, 500)
 }
 
 </script>
@@ -605,8 +622,10 @@ body {
 }
 
 .custom-alert-box {
-  background: white;
-  color: black;
+  background: rgb(11, 180, 19);
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  font-size: large;
   padding: 20px 30px;
   border-radius: 8px;
   box-shadow: 0 0 10px #000;
