@@ -70,11 +70,11 @@
       <h5 class="text-warning fw-bold mb-3">📊 Project Details</h5>
       <div class="row g-3">
         <div class="col-md-6">
-          <label class="form-label fw-bold" style="color: blue;">Project Name (Vietnamese)</label>
+          <label class="form-label fw-bold" style="color: blue;">Project Name (Vietnamese)/*GHI CHÚ</label>
           <input v-model="form.projectNameVN" type="text" class="form-control" placeholder="Tên dự án tiếng Việt" />
         </div>
         <div class="col-md-6">
-          <label class="form-label fw-bold" style="color: blue;">Project Name (English)</label>
+          <label class="form-label fw-bold" style="color: blue;">Project Name (English)/*NOTE</label>
           <input v-model="form.projectNameEN" type="text" class="form-control" placeholder="Project name in English" />
         </div>
         <div class="col-md-6">
@@ -298,13 +298,48 @@
         </div>
       </div>
     </div>
-    </div>
 
+      <!-- NÚT CUỘN LÊN & XUỐNG -->
+<div class="scroll-buttons">
+  <button
+    v-show="showScrollTop"
+    class="scroll-btn"
+    @click="scrollToTop"
+    title="Lên đầu trang"
+  >
+    🔼
+  </button>
+  <button
+    v-show="showScrollTop"
+    class="scroll-btn"
+    @click="scrollToBottom"
+    title="Xuống cuối trang"
+  >
+    🔽
+  </button>
+</div>
+
+<div v-if="showPopup" class="popup-notify show">
+  {{ popupMessage }}
+</div>
+
+    </div>
+    
   </template>
   
   <script setup>
 import { ref, computed, onMounted,watch } from 'vue'
 const editForm = ref({})
+const showPopup = ref(false)
+const popupMessage = ref('')
+
+const triggerPopup = (message) => {
+  popupMessage.value = message
+  showPopup.value = true
+  setTimeout(() => {
+    showPopup.value = false
+  }, 2000)
+}
 
 const openEditModal = (item) => {
   editForm.value = { ...item }
@@ -397,7 +432,7 @@ const totalEstimatedValue = computed(() => {
 
 const submitForm = () => {
   submitted.value = true
-  alert('✅ Đã gửi đăng ký thành công!')
+  triggerPopup('✅ Đã gửi đăng ký thành công!')
 }
 
 const exportDealReg = async () => {
@@ -421,6 +456,25 @@ const exportDealReg = async () => {
     console.error(err)
   }
 }
+
+
+const showScrollTop = ref(false)
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function scrollToBottom() {
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+}
+
+function handleScroll() {
+  showScrollTop.value = window.scrollY > 300
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
 
 </script>
 
@@ -522,5 +576,55 @@ button.btn-success:hover {
 .modal-content {
   background-color: #fdfdfd;
 }
+
+.scroll-buttons {
+  width: 100px;
+  height:100px;
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+}
+
+.scroll-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 12px 16px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+.scroll-btn:hover {
+  background-color: #0056b3;
+}
+
+.popup-notify {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: #28a745;
+  color: white;
+  padding: 16px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  font-size: 1.2rem;
+  font-weight: bold;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  z-index: 9999;
+}
+.popup-notify.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
 </style>
 

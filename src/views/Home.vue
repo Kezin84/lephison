@@ -96,8 +96,8 @@
 >
 <strong>(2)</strong> Tải file Excel⬇️
 </a>
-<button @click="goToDealReg" class="btn btn-warning w-100 mt-2">
-  📤 Điền hàng vào Deal Registration
+<button @click="goToDealReg" class="btn btn-warning w-100 mt-2" style="color:blue;font-weight: bold;">
+   SEND INFO TO DEALREG✅
 </button>
 
 </div>
