@@ -1,12 +1,12 @@
 <template>
     <div class="deal-container">
-      <div class="deal-container">
+      <div class="deal-container fade-slide-in">
     <h2 class="mb-4 text-center" style="color: white;">📋 Deal Registration Form</h2>
 
     <div class="row g-4">
   <!-- 🔷 VÙNG 1: COMPANY INFO -->
   <div class="col-12">
-    <div class="card shadow-sm p-3 border-0 rounded-3">
+    <div class="card shadow-sm p-3 border-0 rounded-3 fade-slide-in">
       <h5 class="text-primary fw-bold mb-3">📁 End User Company Info</h5>
       <div class="row g-3">
         <div class="col-md-6">
@@ -57,7 +57,7 @@
           <label class="form-label fw-bold" style="color: green;">Existing Sophos Customer?</label>
           <div class="form-check mt-2">
             <input class="form-check-input" type="checkbox" v-model="form.isExistingSophos" id="existingCustomer" />
-            <label class="form-check-label" for="existingCustomer">Yes</label>
+            <label class="form-check-label" for="existingCustomer" id="tick" style="font-weight: bold;">YES</label>
           </div>
         </div>
       </div>
@@ -70,12 +70,12 @@
       <h5 class="text-warning fw-bold mb-3">📊 Project Details</h5>
       <div class="row g-3">
         <div class="col-md-6">
-          <label class="form-label fw-bold" style="color: blue;">Project Name (Vietnamese)/*GHI CHÚ</label>
-          <input v-model="form.projectNameVN" type="text" class="form-control" placeholder="Tên dự án tiếng Việt" />
+          <label class="form-label fw-bold" style="color: blue;">GHI CHÚ TIẾNG VIỆT</label>
+          <input v-model="form.projectNameVN" type="text" class="form-control" placeholder="Ghi chú tiếng Việt" />
         </div>
         <div class="col-md-6">
-          <label class="form-label fw-bold" style="color: blue;">Project Name (English)/*NOTE</label>
-          <input v-model="form.projectNameEN" type="text" class="form-control" placeholder="Project name in English" />
+          <label class="form-label fw-bold" style="color: blue;">NOTE ENGLISH</label>
+          <input v-model="form.projectNameEN" type="text" class="form-control" placeholder="Ghi chú tiếng Anh" />
         </div>
         <div class="col-md-6">
           <label class="form-label fw-bold" style="color: blue;">Company Size <span class="fst-italic">(no. of employees)</span></label>
@@ -107,10 +107,10 @@
 </div>
 
     <div class="text-end mt-4">
-      <button @click="submitForm" class="btn btn-primary">SEND ✅ </button>
+      <button @click="submitForm" class="btn btn-primary" style="font-size: 30px;">ĐĂNG KÍ ✅ </button>
     </div>
     <div class="text-end mt-3">
-  <button @click="exportDealReg" class="btn btn-success">📤 Xuất DealReg sang Google Sheet</button>
+  <button @click="exportDealReg" class="btn btn-success">XUẤT GOOGLE SHEET <i class="fa-solid fa-file-excel fa-xl"></i></button>
 </div>
 <div class="text-end mt-2">
   <a
@@ -119,7 +119,7 @@
     download
     class="btn btn-danger"
   >
-    📄 Tải file PDF DealReg
+    XUẤT FILE PDF <i class="fa-solid fa-file-pdf fa-xl"></i>
   </a>
 </div>
 
@@ -320,6 +320,8 @@
   
   <script setup>
 import { ref, computed, onMounted,watch } from 'vue'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 const editForm = ref({})
 const showPopup = ref(false)
 const popupMessage = ref('')
@@ -388,20 +390,57 @@ const fetchCustomerList = async () => {
 }
 
 
-onMounted(() => {
+onMounted(async () => {
   const saved = localStorage.getItem('dealProducts')
   if (saved) {
     products.value = JSON.parse(saved)
   }
-  fetchCustomerList()
+
+  // ✅ Đợi tải xong danh sách khách hàng
+  await fetchCustomerList()
+
+  // ✅ LẤY TỪ QUERY TRUYỀN QUA
+  form.value.companyNameVN = route.query.companyNameVN || ''
+  form.value.userName = route.query.userName || ''
+  form.value.address = route.query.userAddress || ''
+
+  // ✅ TỰ ĐỘNG ĐIỀN THÔNG TIN DỰA TRÊN TÊN CÔNG TY TIẾNG VIỆT (sau khi có dữ liệu)
+  const matched = customerList.value.find(c =>
+    c.companyVN?.trim().toLowerCase() === form.value.companyNameVN?.trim().toLowerCase()
+  )
+  if (matched) {
+    form.value.companyNameEN = matched.companyEN
+    form.value.userName = matched.userName
+    form.value.userEmail = matched.userEmail
+    form.value.userPhone = matched.userPhone
+    form.value.address = matched.address
+    form.value.userWebsite = matched.website
+  }
 })
 
+
+// ✅ Nếu người dùng nhập TÊN CÔNG TY TIẾNG ANH
 watch(() => form.value.companyNameEN, (newName) => {
   const matched = customerList.value.find(c =>
     c.companyEN?.trim().toLowerCase() === newName?.trim().toLowerCase()
   )
   if (matched) {
     form.value.companyNameVN = matched.companyVN
+    form.value.userName = matched.userName
+    form.value.userEmail = matched.userEmail
+    form.value.userPhone = matched.userPhone
+    form.value.address = matched.address
+    form.value.userWebsite = matched.website
+  }
+})
+
+// ✅ Nếu người dùng nhập TÊN CÔNG TY TIẾNG VIỆT
+watch(() => form.value.companyNameVN, (newName) => {
+  const matched = customerList.value.find(c =>
+    c.companyVN?.trim().toLowerCase() === newName?.trim().toLowerCase()
+  )
+  if (matched) {
+    form.value.companyNameEN = matched.companyEN
     form.value.userName = matched.userName
     form.value.userEmail = matched.userEmail
     form.value.userPhone = matched.userPhone
@@ -475,10 +514,11 @@ onMounted(() => {
   max-width: 1000px;
   margin: auto;
   padding: 20px;
-  background-color: #464646; /* Nền trắng */
-  color: #000000;            /* Chữ đen */
+  background-color: transparent; /* ✅ Nền trong suốt */
+  color: #000000;
   font-family: "Segoe UI", sans-serif;
 }
+
 
 .card {
   background-color: #ffffff; /* Nền vùng form nhạt */
@@ -615,6 +655,57 @@ button.btn-success:hover {
 .popup-notify.show {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
+}
+
+::placeholder {
+  font-weight: bold;
+  color:black;
+  opacity: 1; /* Giữ màu rõ nếu trình duyệt tự làm mờ */
+}
+
+
+input:hover{
+    transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+input:focus{
+     transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+.btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 20px;
+}
+
+.btn:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3); /* hiệu ứng bóng đẹp */
+}
+
+#tick:hover{
+  cursor: pointer;
+   transform: scale(1.4);
+  box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3); /* hiệu ứng bóng đẹp */
+}
+#existingCustomer:hover{
+  cursor: pointer;
+   transform: scale(1.9);
+  box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3); /* hiệu ứng bóng đẹp */
+}
+
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fade-slide-in {
+  animation: fadeSlideIn 0.5s ease-out both;
 }
 
 </style>

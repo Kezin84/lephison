@@ -1,105 +1,107 @@
 <template>
-  <div class="container py-4">
-    <h2 class="text-center mb-4" style="color: white;">📋 Quản lý Khách hàng</h2>
-
-    <!-- VÙNG 1 -->
-    <div class="border rounded p-3 mb-3 bg-light">
-      <h5 class="mb-3 text-primary">Thông tin công ty</h5>
-      <div class="row g-3">
-        <div class="col-md-4" v-for="(ph, key) in group1" :key="key">
-          <label class="form-label fw-bold" style="color:blue">{{ key }}</label>
-          <input v-model="form[key]" :placeholder="ph" class="form-control" />
+  <div class="container-wrapper">
+    <div class="container py-4 animate-fade">
+      <h2 class="text-center text-light mb-4 animate-pop">📋 Quản lý Khách hàng</h2>
+      <!-- TÌM KIẾM -->
+      <div class="d-flex justify-content-center mb-4">
+        <div class="search-box">
+          <input
+            v-model="searchQuery"
+            class="form-control search-input"
+            placeholder="🔍 Tìm theo MST, Công ty (VN), Công ty (EN), Contact..."
+          />
         </div>
       </div>
-    </div>
 
-    <!-- VÙNG 2 -->
-    <div class="border rounded p-3 mb-4 bg-light">
-      <h5 class="mb-3 text-primary" style="color:green">Thông tin liên hệ</h5>
-      <div class="row g-3">
-        <div class="col-md-4" v-for="(ph, key) in group2" :key="key">
-          <label class="form-label fw-bold" style="color:green">{{ key }}</label>
-          <input v-model="form[key]" :placeholder="ph" class="form-control" />
-        </div>
-      </div>
-    </div>
-
-    <div class="text-end mb-4">
-      <button class="btn btn-primary px-4 py-2 fw-bold" style="min-width: 150px;" @click="handleAdd">
-        ➕ THÊM
-      </button>
-    </div>
-
-    <!-- TÌM KIẾM -->
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <input v-model="searchQuery" class="form-control" placeholder="🔍 Tìm theo MST, Công ty (VN), Công ty (EN), Contact..." />
-      </div>
-    </div>
-
-    <!-- BẢNG -->
-    <table class="table table-bordered border-dark text-center">
-      <thead style="background-color: green; color: white;">
-        <tr>
-          <th style="background-color: green;color: antiquewhite;">STT</th>
-          <th style="background-color: green;color: antiquewhite;">MST</th>
-          <th style="background-color: green;color: antiquewhite;">Company (VN)</th>
-          <th style="background-color: green;color: antiquewhite;">Company (EN)</th>
-          <th style="background-color: green;color: antiquewhite;">Website</th>
-          <th style="background-color: green;color: antiquewhite;">Địa chỉ</th>
-          <th style="background-color: green;color: antiquewhite;">SDT Cty</th>
-          <th style="background-color: green;color: antiquewhite;">Fax</th>
-          <th style="background-color: green;color: antiquewhite;">Contact Info</th>
-          <th style="background-color: green;color: antiquewhite;">Email</th>
-          <th style="background-color: green;color: antiquewhite;">SDT cá nhân</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="tRow"
-          v-for="(row, index) in filteredCustomers"
-          :key="index"
-          @click="openModal(row, index)"
-          :style="{ backgroundColor: index % 2 === 0 ? '#f8f9fa' : 'white', cursor: 'pointer' }">
-          <td>{{ index + 1 }}</td>
-          <td>{{ row.MST }}</td>
-          <td>{{ row['COMPANY (VN)'] }}</td>
-          <td>{{ row['COMPANY (EN)'] }}</td>
-          <td>{{ row.Website }}</td>
-          <td>{{ row.Address }}</td>
-          <td>{{ row['SDT Cty'] }}</td>
-          <td>{{ row.Fax }}</td>
-          <td>{{ row.Contact }}</td>
-          <td>{{ row.Email }}</td>
-          <td>{{ row['SDT Cá Nhân'] }}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- MODAL -->
-    <div v-if="modalVisible" class="modal-backdrop">
-      <div class="modal-content-custom">
-        <h5 class="mb-3">📝 Cập nhật / Xóa khách hàng</h5>
-        <div class="row g-3 mb-3">
-          <div class="col-md-6" v-for="(val, key) in modalData" :key="key">
+      <!-- VÙNG 1 -->
+      <div class="border rounded p-3 mb-3 bg-light animate-fade-in">
+        <h5 class="mb-3 text-primary">Thông tin công ty</h5>
+        <div class="row g-3">
+          <div class="col-md-4" v-for="(ph, key) in group1" :key="key">
             <label class="form-label fw-bold" style="color:blue">{{ key }}</label>
-            <input v-model="modalData[key]" type="text" class="form-control" />
+            <input v-model="form[key]" :placeholder="ph" class="form-control input-animated" />
           </div>
         </div>
-        <div>
-          <button class="btn btn-success me-2" @click="handleUpdate">CẬP NHẬT ✅</button>
-          <button class="btn btn-danger me-2" @click="handleDelete">XÓA KHÁCH ⚠️</button>
-          <button class="btn btn-secondary" @click="closeModal">CLOSE </button>
+      </div>
+
+      <!-- VÙNG 2 -->
+      <div class="border rounded p-3 mb-4 bg-light animate-fade-in">
+        <h5 class="mb-3 text-primary" style="color:green">Thông tin liên hệ</h5>
+        <div class="row g-3">
+          <div class="col-md-4" v-for="(ph, key) in group2" :key="key">
+            <label class="form-label fw-bold" style="color:green">{{ key }}</label>
+            <input v-model="form[key]" :placeholder="ph" class="form-control input-animated" />
+          </div>
         </div>
       </div>
+
+      <div class="text-end mb-4">
+        <button class="btn btn-primary px-4 py-2 fw-bold btn-animated" style="min-width: 150px; background: linear-gradient(to right, #52c234,#061700) !important;color: whitesmoke;" @click="handleAdd">
+          <i class="fa-solid fa-square-plus fa-2xl"></i>
+        </button>
+      </div>
+
+      <!-- BẢNG -->
+      <table class="table table-bordered border-dark text-center animate-pop">
+        <thead style="background-color: green; color: white;">
+          <tr>
+            <th style="background-color: green;color: antiquewhite;">STT</th>
+            <th style="background-color: green;color: antiquewhite;">MST</th>
+            <th style="background-color: green;color: antiquewhite;">Company (VN)</th>
+            <th style="background-color: green;color: antiquewhite;">Company (EN)</th>
+            <th style="background-color: green;color: antiquewhite;">Website</th>
+            <th style="background-color: green;color: antiquewhite;">Địa chỉ</th>
+            <th style="background-color: green;color: antiquewhite;">SDT Cty</th>
+            <th style="background-color: green;color: antiquewhite;">Fax</th>
+            <th style="background-color: green;color: antiquewhite;">Contact Info</th>
+            <th style="background-color: green;color: antiquewhite;">Email</th>
+            <th style="background-color: green;color: antiquewhite;">SDT cá nhân</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="tRow"
+            v-for="(row, index) in filteredCustomers"
+            :key="index"
+            @click="openModal(row, index)"
+            :style="{ backgroundColor: index % 2 === 0 ? '#f8f9fa' : 'white', cursor: 'pointer' }">
+            <td>{{ index + 1 }}</td>
+            <td>{{ row.MST }}</td>
+            <td>{{ row['COMPANY (VN)'] }}</td>
+            <td>{{ row['COMPANY (EN)'] }}</td>
+            <td>{{ row.Website }}</td>
+            <td>{{ row.Address }}</td>
+            <td>{{ row['SDT Cty'] }}</td>
+            <td>{{ row.Fax }}</td>
+            <td>{{ row.Contact }}</td>
+            <td>{{ row.Email }}</td>
+            <td>{{ row['SDT Cá Nhân'] }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- MODAL -->
+      <div v-if="modalVisible" class="modal-backdrop">
+        <div class="modal-content-custom">
+          <h5 class="mb-3">📝 Cập nhật / Xóa khách hàng</h5>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6" v-for="(val, key) in modalData" :key="key">
+              <label class="form-label fw-bold" style="color:blue">{{ key }}</label>
+              <input v-model="modalData[key]" type="text" class="form-control input-animated" />
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-success me-2 btn-animated" @click="handleUpdate">CẬP NHẬT ✅</button>
+            <button class="btn btn-danger me-2 btn-animated" @click="handleDelete">XÓA KHÁCH ⚠️</button>
+            <button class="btn btn-secondary btn-animated" @click="closeModal">CLOSE </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- POPUP THÔNG BÁO -->
+      <div v-if="showPopup" class="popup-notify show animate-fade-in">
+        {{ popupMessage }}
+      </div>
     </div>
-
-    <!-- POPUP THÔNG BÁO -->
-    <div v-if="showPopup" class="popup-notify" :class="{ show: showPopup }">
-      {{ popupMessage }}
-    </div>
-
-
-
   </div>
 </template>
 
@@ -317,5 +319,75 @@ onMounted(() => {
   background-color: #0056b3;
 }
 
+.search-box {
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
 
+.search-input {
+  padding: 12px 20px;
+  border-radius: 50px;
+  border: 2px solid #28a745;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  background-color: #ffffff;
+  transform: scale(1.2);
+}
+
+.search-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+  outline: none;
+  transform: scale(1.4);
+}
+
+.search-input:hover {
+  transform: scale(1.4);
+}
+.btn:hover{
+  transform: scale(1.4);
+  transition: transform 0.3s ease;
+}
+input:hover{
+    transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+input:focus{
+     transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+::placeholder {
+  font-weight: bold;
+  color:rgb(122, 122, 122);
+  opacity: 1; /* Giữ màu rõ nếu trình duyệt tự làm mờ */
+}
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeInUp 0.6s ease-out both;
+}
+.animate-pop {
+  animation: popIn 0.5s ease-out both;
+}
+@keyframes popIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.input-animated {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.input-animated:hover,
+.input-animated:focus {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.3);
+}
+.btn-animated:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(50, 255, 50, 0.5);
+}
 </style>

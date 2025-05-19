@@ -1,44 +1,47 @@
 <template>
-   
+   <div class="bao-gia-wrapper">
   <div class="container py-4">
-    <h2 class="mb-4 text-center" style="color: white;">BÁO GIÁ 💻</h2>
+   <h2 class="mb-4 text-center text-light animate-pop">BÁO GIÁ 💻</h2>
     
     <div class="row">
       <div class="col-md-4">
-        <div class="card shadow-sm p-3 mb-4 bg-body rounded">
-          <h5 class="mb-3">Nhập thông tin</h5>
+        <div class="card shadow-sm p-3 mb-4 bg-body rounded animate-fade-up">
+          <h1 class="mb-3" style="color: blue;">Nhập thông tin</h1>
 
           <div class="mb-3">
-  <label class="form-label" style="color: red;font-weight: bold;">Tên Công Ty</label>
+  <label class="form-label" style="color: red;font-weight: bold;font-size: 20px;">Tên Công Ty</label>
+<div class="dropdown-wrapper">
   <input
     v-model="companyName"
     list="companyOptions"
     @input="autoFillCustomerInfo"
-    class="form-control"
+    class="form-control with-icon"
     placeholder="Nhập hoặc chọn công ty..."
   />
   <datalist id="companyOptions">
-  <option
-    v-for="(c, index) in customerList"
-    :key="index"
-    :value="c.company"
-  />
-</datalist>
+    <option
+      v-for="(c, index) in customerList"
+      :key="index"
+      :value="c.company"
+    />
+  </datalist>
+</div>
+
 </div>
 
 
           <div class="mb-3">
-            <label class="form-label" style="color: red;font-weight: bold;">Tên Người Nhận</label>
+            <label class="form-label" style="color: red;font-weight: bold;font-size: 20px;">Tên Người Nhận</label>
             <input v-model="receiverName" type="text" class="form-control"  placeholder="Nhập tên người nhận"/>
           </div>
 
           <div class="mb-3">
-            <label class="form-label" style="color: red;font-weight: bold;">Địa Chỉ Người Nhận</label>
+            <label class="form-label" style="color: red;font-weight: bold;font-size: 20px;">Địa Chỉ Người Nhận</label>
             <input v-model="receiverAddress" type="text" class="form-control"  placeholder="Nhập địa chỉ người nhận"/>
           </div>
 
           <div class="mb-3">
-            <label class="form-label" style="color: blue;font-weight: bold;">Chọn Model (Thiết bị)</label>
+            <label class="form-label" style="color: blue;font-weight: bold;font-size: 20px;">Chọn Model (Thiết bị)</label>
             <select v-model="selectedModelName" class="form-select" @change="onSelectModel">
               <option value="" disabled>-- Chọn thiết bị --</option>
               <option v-for="model in models" :key="model.modelName" :value="model.modelName">
@@ -48,7 +51,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label" style="color: blue;font-weight: bold;" >Chọn License</label>
+            <label class="form-label" style="color: blue;font-weight: bold;font-size: 20px;" >Chọn License</label>
             <select v-model="selectedLicenseName" class="form-select">
               <option value="" disabled>-- Chọn license --</option>
               <option v-for="license in availableLicenses" :key="license.licenseName" :value="license.licenseName">
@@ -57,34 +60,34 @@
             </select>
           </div>
           <div class="mb-3">
-  <label class="form-label" style="color: green;font-weight: bold;">Chọn loại tiền</label>
+  <label class="form-label" style="color: green;font-weight: bold;font-size: 20px;">Chọn loại tiền</label>
   <select v-model="currency" class="form-select" style="background-color: red;color: aliceblue;font-weight: bold;">
     <option value="VND">VNĐ</option>
-    <option value="USD">USD</option>
+    <option style="background-color: green;color: aliceblue;" value="USD">USD</option>
   </select>
 </div>
 
           <div class="row g-2">
             <div class="col-6">
-              <label class="form-label" style="color: blue;font-weight: bold;">Số lượng</label>
+              <label class="form-label" style="color: blue;font-weight: bold;font-size: 20px;">Số lượng</label>
               <input v-model.number="form.quantity" type="number" min="1" class="form-control" />
             </div>
             <div class="col-6">
-              <label class="form-label" style="color: blue;font-weight: bold;">VAT (%)</label>
+              <label class="form-label" style="color: blue;font-weight: bold;font-size: 20px;">VAT (%)</label>
               <input v-model.number="form.vat" type="number" min="0" class="form-control" />
             </div>
             <div class="mb-3">
-  <label class="form-label" style="color: blue;font-weight: bold;">Mức Off (%)</label>
+  <label class="form-label" style="color: blue;font-weight: bold;font-size: 20px;">Mức Off (%)</label>
   <input v-model.number="form.offPercent" type="number" min="0" max="100" class="form-control" />
 </div>
 
           </div>
 
-          <button @click="addProduct" class="btn btn-success w-100 mt-3" style="background-color: blue;">
-             THÊM✅
+          <button @click="addProduct" class="btn btn-success w-100 mt-3" style="background-color: blue;font-weight: bold;font-size: 25px; width: 100px;padding: 10px;">
+              <i class="fa-solid fa-circle-plus fa-2xl"></i>
           </button>
           <div class="text-end mt-3">
-  <button @click="exportToGoogleSheet" class="btn btn-primary" style="background-color: green;">
+  <button @click="exportToGoogleSheet" class="btn btn-primary" style="background-color: green;font-weight: bold;font-size: 20px;">
     <strong>(1)</strong> Xuất báo giá sang Google Sheet📤
   </button><br>
   <a
@@ -92,7 +95,7 @@
   target="_blank"
   download
   class="btn btn-success"
-  style="margin-top: 1rem;"
+  style="margin-top: 1rem; font-size: 20px;font-weight: bold"
 >
 <strong>(2)</strong> DOAWLOAD EXCEL⬇️
 </a><br>
@@ -101,11 +104,11 @@
     target="_blank"
     download
     class="btn btn-danger"
-    style="margin-top: 0.5rem;"
+    style="margin-top: 0.5rem;font-size: 20px;font-weight: bold"
   >
     <strong>(3)</strong> DOAWLOAD PDF 📑
   </a>
-<button @click="goToDealReg" class="btn btn-warning w-100 mt-2" style="color:blue;font-weight: bold;">
+<button @click="goToDealReg" class="btn btn-warning w-100 mt-2" style="color:blue;font-weight: bold;font-size: 25px;">
    SEND PRICE TO DEALREG✅
 </button>
 
@@ -126,6 +129,7 @@
       <button @click="goToCurrentForm" class="btn btn-warning btn-lg">
         📝 Form báo giá hiện tại
       </button>
+      <div class="table-wrapper animate-fade-up">
         <table class="table table-bordered text-center align-middle fixed-table">
           <thead class="table-light">
             <tr >
@@ -167,6 +171,7 @@
 </tr>
           </tbody>
         </table>
+        </div>
         <div class="mt-3 text-end" style="color: greenyellow; font-size: large;">
   Chênh lệch tổng giá list: 
   <strong><span style="font-weight: bold;font-size: large;">{{ formatPrice(differenceThanhTienVsGiaList) }}</span></strong>
@@ -217,6 +222,10 @@
     <label class="form-label" style="color: blue;font-weight: bold;">Mức Off (%)</label>
     <input v-model.number="editingProduct.offPercent" type="number" min="0" max="100" class="form-control" />
   </div>
+   <div class="col-6">
+    <label class="form-label" style="color: blue;font-weight: bold;">VAT (%)</label>
+    <input v-model.number="editingProduct.vatPercent" type="number" min="0" max="100" class="form-control" />
+  </div>
 </div>
 
         <div class="mt-3 text-end">
@@ -232,8 +241,17 @@
     <p>{{ alertMessage }}</p>
   </div>
 </div>
+  <!-- CUSTOM POPUP THÔNG BÁO ĐẸP -->
+    <transition name="fade-scale">
+      <div v-if="showAlert" class="custom-popup">
+        <div class="custom-popup-content">
+          <i class="fa-solid fa-circle-check"></i>
+          <p class="mb-0">{{ alertMessage }}</p>
+        </div>
+      </div>
+    </transition>
 
-
+</div>
 </template>
 
 <script setup>
@@ -265,13 +283,6 @@ const showAlert = ref(false)
 const alertMessage = ref('')
 
 const customerList = ref([])
-const customAlert = (msg) => {
-  alertMessage.value = msg
-  showAlert.value = true
-  setTimeout(() => {
-    showAlert.value = false
-  }, 500) // ⏱️ 0.5 giây
-}
 
 
 const fetchCustomerList = async () => {
@@ -348,7 +359,7 @@ const findPrice = (licenseName, modelName) => {
 
 const addProduct = () => {
   if (!selectedModelName.value) {
-    alert('Vui lòng chọn thiết bị')
+    customAlert('Vui lòng chọn thiết bị')
     return
   }
 
@@ -368,7 +379,7 @@ const addProduct = () => {
   if (selectedLicenseName.value) {
     price = findPrice(selectedLicenseName.value, selectedModelName.value)
     if (price === 0) {
-      alert('Không tìm thấy giá license cho model này!')
+      customAlert('Không tìm thấy giá license cho model này!')
       return
     }
     type = 'SOPHOS'
@@ -488,16 +499,16 @@ const updatePriceFormatted = (event) => {
 
 const exportToGoogleSheet = async () => {
   if (productList.value.length === 0) {
-    alert('Danh sách hàng hóa trống, không thể xuất!')
+    customAlert('Danh sách hàng hóa trống, không thể xuất!')
     return
   }
   if (!companyName.value || !receiverName.value || !receiverAddress.value) {
-    alert('Vui lòng nhập đầy đủ thông tin Công ty, Người nhận, Địa chỉ!')
+    customAlert('Vui lòng nhập đầy đủ thông tin Công ty, Người nhận, Địa chỉ!')
     return
   }
 
   try {
-    alert('⏳ Đang xuất dữ liệu, vui lòng chờ...')
+    customAlert('⏳ Đang xuất dữ liệu, vui lòng chờ...')
 
     await fetch('https://script.google.com/macros/s/AKfycbzp7MVJpNIMSaa29fsa3aCD81wJVLKElCaAKOQ4WBLb38bh13CCfsrGV8uQKSh3F0QQcw/exec', {
       method: 'POST',
@@ -513,13 +524,13 @@ const exportToGoogleSheet = async () => {
     })
 
     setTimeout(() => {
-      alert('✅ OK RỒI CHÚ SƠN CU BỰ')
+      customAlert('✅ OK RỒI CHÚ SƠN CU BỰ')
       window.open('https://docs.google.com/spreadsheets/d/1J8-2PioiG1JEumeQ5k90B-Jux9M1noRXSOwJsuPlghM/edit?gid=1649674712', '_blank');
 
     }, 500)
   } catch (error) {
     console.error('Lỗi xuất Google Sheet:', error)
-    alert('❌ Lỗi kết nối khi xuất Google Sheet!')
+    customAlert('❌ Lỗi kết nối khi xuất Google Sheet!')
   }
 }
 
@@ -535,7 +546,7 @@ const goToCurrentForm = () => {
   window.open('https://docs.google.com/spreadsheets/d/1J8-2PioiG1JEumeQ5k90B-Jux9M1noRXSOwJsuPlghM/edit?gid=1649674712', '_blank')
 }
 
-window.alert = (msg) => {
+window.customAlert = (msg) => {
   alertMessage.value = msg
   showAlert.value = true
   setTimeout(() => {
@@ -546,17 +557,41 @@ window.alert = (msg) => {
 
 const goToDealReg = () => {
   if (productList.value.length === 0) {
-    alert('⚠️ Vui lòng thêm ít nhất 1 sản phẩm trước khi điền!')
+    customAlert('⚠️ Vui lòng thêm ít nhất 1 sản phẩm trước khi điền!')
     return
   }
+
+  // ✅ Lưu sản phẩm vào localStorage như cũ
   localStorage.setItem('dealProducts', JSON.stringify(productList.value))
 
-  // ✅ Thông báo chép thành công
-  alert('✅ Đã chép dữ liệu thành công!')
+  // ✅ Đẩy qua DealReg kèm query chứa thông tin công ty/người nhận
+  router.push({
+    path: '/dealreg',
+    query: {
+      reload: Date.now(), // force reload
+      companyNameVN: companyName.value,
+      userName: receiverName.value,
+      userAddress: receiverAddress.value
+    }
+  })
+}
 
-  setTimeout(() => {
-    router.push('/dealreg')
-  }, 500)
+
+
+
+const savedData = localStorage.getItem('dataFromDXMH')
+if (savedData) {
+  try {
+    const parsed = JSON.parse(savedData)
+    productList.value = parsed.productList || []
+    companyName.value = parsed.companyName || ''
+    receiverName.value = parsed.receiverName || ''
+    receiverAddress.value = parsed.receiverAddress || ''
+    localStorage.removeItem('dataFromDXMH')
+    customAlert('✅ Đã nhận dữ liệu từ Đề Xuất Mua Hàng!')
+  } catch (e) {
+    console.error('❌ Lỗi parse dữ liệu từ DXMH:', e)
+  }
 }
 
 </script>
@@ -620,29 +655,253 @@ const goToDealReg = () => {
 body {
   overflow-x: hidden;
 }
-.custom-alert {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-.custom-alert-box {
-  background: rgb(11, 180, 19);
-  color: rgb(255, 255, 255);
-  font-weight: bold;
-  font-size: large;
-  padding: 20px 30px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px #000;
-  max-width: 400px;
-  text-align: center;
-}
 .tRow:hover{
   opacity: 0.8;
+  
 }
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.fixed-table {
+  table-layout: fixed;
+  min-width: 1200px; /* ✅ để giữ cột không co quá mức */
+  width: 100%;
+}
+
+.fixed-table th, .fixed-table td {
+  white-space: normal;
+  word-break: break-word;
+  padding: 8px;
+  height: 80px;
+  vertical-align: middle;
+}
+
+.bao-gia-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 220px;
+}
+
+.container {
+  width: 100%;
+  margin: 0;
+  padding: 0 20px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: unset !important;
+  padding-bottom: 0;
+}
+
+.fixed-table {
+  table-layout: fixed;
+  width: 100%;
+  min-width: 1000px; /* Hoặc bỏ luôn nếu đủ rộng */
+}
+
+.fixed-table th, .fixed-table td {
+  white-space: normal;
+  word-break: break-word;
+  padding: 8px;
+  height: 80px;
+  vertical-align: middle;
+}
+
+/* Giữ nguyên phần icon mũi tên */
+.dropdown-wrapper {
+  position: relative;
+}
+
+.with-icon {
+  padding-right: 30px;
+}
+
+/* Mũi tên ▼ */
+.dropdown-wrapper::after {
+  content: '▼';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+  font-size: 12px;
+}
+
+/* ✅ Khi hover vào input thì đổi con trỏ */
+.with-icon:hover {
+  cursor: pointer;
+}
+.card {
+  background: rgba(255, 255, 255, 0.1); /* Nền trong suốt nhẹ */
+  border-radius: 20px;
+  backdrop-filter: blur(10px); /* Hiệu ứng mờ nền */
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 -4px 20px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.05); /* Đổ bóng 4 phía + viền ánh sáng */
+  transition: all 0.4s ease;
+}
+
+/* Khi hover, nâng khung lên nhẹ */
+
+.btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 20px;
+}
+
+.btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3); /* hiệu ứng bóng đẹp */
+}
+input:hover{
+    transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+input:focus{
+     transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+::placeholder {
+  font-weight: bold;
+  color:rgb(122, 122, 122);
+  opacity: 1; /* Giữ màu rõ nếu trình duyệt tự làm mờ */
+}
+
+select {
+  border: 2px solid black;
+}
+
+select:hover{
+  cursor: pointer;
+      transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* POPUP HIỆU ỨNG CHUYÊN NGHIỆP */
+.custom-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+.custom-popup-content {
+  background: linear-gradient(to right, #00b09b, #96c93d);
+  color: white;
+  padding: 18px 30px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: popupFade 0.3s ease-out;
+}
+.custom-popup-content i {
+  font-size: 1.5rem;
+  color: white;
+}
+@keyframes popupFade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+.fade-scale-enter-active, .fade-scale-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-scale-enter-from, .fade-scale-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+@keyframes slideFadeBlur {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+.animate-slide-fade-blur {
+  animation: slideFadeBlur 0.6s ease-out both;
+}
+
+@keyframes zoomDrop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+}
+.animate-zoom-drop {
+  animation: zoomDrop 0.5s ease-out both;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-pop {
+  animation: popIn 0.4s ease-out both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.5s ease-out both;
+}
+
+@keyframes zoomDrop {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal {
+  animation: zoomDrop 0.4s ease-out both;
+}
+
 </style>
 
