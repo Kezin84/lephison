@@ -52,23 +52,23 @@
     <div :class="['sidebar', { collapsed: isCollapsed }]">
       <transition name="fade">
         <div class="nav-links" v-if="!isCollapsed">
-          <router-link to="/datalist" style="font-size: 20px;">
-            <i class="fa-solid fa-database fa-xl"></i>
+          <router-link to="/datalist" style="font-size: 20px;"  class="glow-text">
+            <i class="fa-solid fa-database fa-xl "></i>
             <span>DATABASE</span>
           </router-link>
-          <router-link to="/customers" style="font-size: 20px;">
+          <router-link to="/customers" style="font-size: 20px;" class="glow-text">
             <i class="fa-solid fa-users fa-xl"></i>
             <span>QUẢN LÝ KHÁCH HÀNG</span>
           </router-link>
-          <router-link to="/" style="font-size: 20px;">
+          <router-link to="/" style="font-size: 20px;" class="glow-text">
             <i class="fa-solid fa-pen-to-square fa-xl"></i>
             <span>BÁO GIÁ</span>
           </router-link>
-          <router-link to="/dealreg" style="font-size: 20px;">
-            <i class="fa-solid fa-file-word fa-xl"></i>
+          <router-link to="/dealreg" style="font-size: 20px;" class="glow-text">
+            <i class="fa-solid fa-file-word fa-xl " ></i>
             <span>ĐĂNG KÍ DEALREG</span>
           </router-link>
-          <router-link to="/import-excel" style="font-size: 20px;">
+          <router-link to="/import-excel" style="font-size: 20px;" class="glow-text">
             <i class="fa-solid fa-file-invoice-dollar fa-xl"></i>
             <span>ĐỀ XUẤT MUA HÀNG</span>
           </router-link>
@@ -900,22 +900,31 @@ const isCollapsed = ref(false)
   bottom: 6px;
   left: 0;
   height: 2px;
-  background-color: #2bff00;
-  width: 100%;
+  background-color: rgba(0, 255, 255, 0.8);
+   width: 70%;
+  min-width: 40px;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.3s ease;
 }
 
+
 .sidebar a:hover,
 .sidebar a.router-link-exact-active {
   transform: scale(1.4);
-  color: #48ff00;
+  color: #ffffff;
+    text-shadow:
+    0 0 3px rgba(0, 255, 255, 0.5),
+    0 0 6px rgba(0, 255, 255, 0.7);
+  
 }
 
 .sidebar a:hover::after,
 .sidebar a.router-link-exact-active::after {
   transform: scaleX(1);
+    text-shadow:
+    0 0 3px rgba(0, 255, 255, 0.5),
+    0 0 6px rgba(0, 255, 255, 0.7);
 }
 
 .main-content {
@@ -957,5 +966,57 @@ const isCollapsed = ref(false)
   -webkit-mask-composite: destination-out;
   animation: borderGlow 4s linear infinite;
 }
+
+.glow-text span {
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+  font-size: 18px;
+  color: #ffffff; /* chữ trắng rõ nét */
+  overflow: hidden; /* 👈 cần thiết để giữ ánh sáng trong khung chữ */
+  z-index: 1;
+}
+
+.glow-text span::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: transparent;
+  background: linear-gradient(
+    120deg,
+    rgba(0, 255, 255, 0) 0%,
+    rgba(0, 255, 255, 1) 50%,
+    rgba(0, 255, 255, 0) 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shine 2.5s linear infinite;
+  mix-blend-mode: screen; /* 👈 để ánh sáng hiển thị trên màu trắng */
+  pointer-events: none;
+  z-index: 2;
+}
+
+
+.glow-text i {
+  color: #ffffff;
+  text-shadow:
+    0 0 3px rgba(0, 255, 255, 0.5),
+    0 0 6px rgba(0, 255, 255, 0.7);
+  transition: all 0.3s ease;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
 
 </style>

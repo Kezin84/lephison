@@ -684,6 +684,7 @@ body {
   display: flex;
   justify-content: flex-start;
   padding-left: 220px;
+  margin-left:-150px ;
 }
 
 .container {
